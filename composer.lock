@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "da6aab1de6ffbce6b919ac4da4069e4a",
+    "hash": "1a73c9383a4d4914646ba6f479fff81e",
     "packages": [
         {
             "name": "aztech/event-dispatcher",
@@ -88,6 +88,58 @@
             "description": "PHP Utility classes",
             "homepage": "http://www.aztech.io",
             "time": "2013-11-01 00:00:00"
+        },
+        {
+            "name": "centraldesktop/protobuf-php",
+            "version": "0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/centraldesktop/Protobuf-PHP.git",
+                "reference": "bf0e28790c41d6b8a8d5b5dd753b62420370c32f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/centraldesktop/Protobuf-PHP/zipball/bf0e28790c41d6b8a8d5b5dd753b62420370c32f",
+                "reference": "bf0e28790c41d6b8a8d5b5dd753b62420370c32f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0",
+                "symfony/console": "2.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "bin": [
+                "protoc-gen-php.bat",
+                "protoc-gen-php.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "DrSlump": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Iván -DrSlump- Montes",
+                    "email": "drslump@pollinimini.net",
+                    "homepage": "https://github.com/drslump/Protobuf-PHP"
+                }
+            ],
+            "description": "PHP implementation of Google's Protocol Buffers",
+            "homepage": "https://github.com/drslump/Protobuf-PHP",
+            "keywords": [
+                "protobuf",
+                "protocol buffer",
+                "serializing"
+            ],
+            "time": "2014-03-07 18:39:44"
         },
         {
             "name": "ocramius/instantiator",
@@ -305,6 +357,61 @@
                 "uuid"
             ],
             "time": "2014-08-27 22:39:41"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.3.1",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "ff905395bee7f99f422f9b3a2cbf536813fcc1cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/ff905395bee7f99f422f9b3a2cbf536813fcc1cb",
+                "reference": "ff905395bee7f99f422f9b3a2cbf536813fcc1cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-06-11 07:15:14"
         }
     ],
     "packages-dev": [
@@ -1193,61 +1300,6 @@
                 "standards"
             ],
             "time": "2014-08-05 23:54:05"
-        },
-        {
-            "name": "symfony/console",
-            "version": "v2.3.1",
-            "target-dir": "Symfony/Component/Console",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Console.git",
-                "reference": "ff905395bee7f99f422f9b3a2cbf536813fcc1cb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/ff905395bee7f99f422f9b3a2cbf536813fcc1cb",
-                "reference": "ff905395bee7f99f422f9b3a2cbf536813fcc1cb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "symfony/event-dispatcher": "~2.1"
-            },
-            "suggest": {
-                "symfony/event-dispatcher": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Console\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Console Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-06-11 07:15:14"
         },
         {
             "name": "symfony/yaml",
