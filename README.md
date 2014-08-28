@@ -1,26 +1,26 @@
-# aztech/events
+# aztech/event-bus
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/aztech-dev/events.png?branch=master)](https://travis-ci.org/aztech-dev/events)
-[![Code Coverage](https://scrutinizer-ci.com/g/aztech-dev/events/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/aztech-dev/events/?branch=master)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/aztech-dev/events/badges/quality-score.png?s=668e4df5ba163c804504257d4a026a0a549f220a)](https://scrutinizer-ci.com/g/aztech-dev/events/)
+[![Build Status](https://travis-ci.org/aztech-dev/event-bus.png?branch=master)](https://travis-ci.org/aztech-dev/event-bus)
+[![Code Coverage](https://scrutinizer-ci.com/g/aztech-dev/event-bus/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/aztech-dev/event-bus/?branch=master)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/aztech-dev/event-bus/badges/quality-score.png?s=668e4df5ba163c804504257d4a026a0a549f220a)](https://scrutinizer-ci.com/g/aztech-dev/event-bus/)
 [![Dependency Status](https://www.versioneye.com/user/projects/53b92a84609ff04f7f000003/badge.svg)](https://www.versioneye.com/user/projects/53b92a84609ff04f7f000003)
-[![HHVM Status](http://hhvm.h4cc.de/badge/aztech/events.png)](http://hhvm.h4cc.de/package/aztech/events)
+[![HHVM Status](http://hhvm.h4cc.de/badge/aztech/event-bus.png)](http://hhvm.h4cc.de/package/aztech/event-bus)
 
 ## Stability
 
-[![Latest Stable Version](https://poser.pugx.org/aztech/events/v/stable.png)](https://packagist.org/packages/aztech/events)
-[![Latest Unstable Version](https://poser.pugx.org/aztech/events/v/unstable.png)](https://packagist.org/packages/aztech/events)
+[![Latest Stable Version](https://poser.pugx.org/aztech/event-bus/v/stable.png)](https://packagist.org/packages/aztech/event-bus)
+[![Latest Unstable Version](https://poser.pugx.org/aztech/event-bus/v/unstable.png)](https://packagist.org/packages/aztech/event-bus)
 
 ## Installation
 
 ### Via Composer
 
-Composer is the only supported way of installing *aztech/events* . Don't know Composer yet ? [Read more about it](https://getcomposer.org/doc/00-intro.md).
+Composer is the only supported way of installing *aztech/event-bus* . Don't know Composer yet ? [Read more about it](https://getcomposer.org/doc/00-intro.md).
 
 
-`$ composer require "aztech/events":"~1"`
+`$ composer require "aztech/event-bus":"~1"`
 
 ## Autoloading
 
@@ -32,12 +32,12 @@ require_once 'vendor/autoload.php';
 
 ## Concepts
 
-*aztech/events* aims to provide a solid foundation to build event driven architectures in PHP. 
+*aztech/event-bus* aims to provide a solid foundation to build event driven architectures in PHP.
 
 The current mainstream approach in existing libraries is currently to produce and consume events within the same process (for example, during a single HTTP request). While this is fine in most cases,
-it does not fit in well with distributed systems, where events need to cross process/host boundaries. This library attempts to solve that by decoupling totally the publish and the subscribe processes through the use of *event channels*. 
+it does not fit in well with distributed systems, where events need to cross process/host boundaries. This library attempts to solve that by decoupling totally the publish and the subscribe processes through the use of *event channels*.
 
-An event channel is simply any resource to which data can be written to and retrieved later (read TCP socket, memory, shared memory, files, message queues...). When an event is published, it is serialized and written to a channel, instead of being dispatched to the event subscribers. 
+An event channel is simply any resource to which data can be written to and retrieved later (read TCP socket, memory, shared memory, files, message queues...). When an event is published, it is serialized and written to a channel, instead of being dispatched to the event subscribers.
 
 On the other end of the channel, a consumer is responsible for reading incoming events (synchronously or not, depending on the channel type used) and pushing them to a standard event dispatcher.
 
@@ -53,7 +53,7 @@ This means you can publish and dispatch events using the following methods :
       * Mixpanel (publish only, untested)
       * File (tested)
       * And more to come...
-    
+
 **TODO** : Test the untested transports
 
 If you want to create and publish events, you will need to use a **publisher**. Currently, the library provides native support for publishing events to AMQP-compatible message queues and synchronous event publishing.
@@ -100,7 +100,7 @@ Event category matching actually follows the [AMQP topic specification](https://
 > The token consisting of the single character "#" matches zero or more words in the subject field.
 > Thus the filter value "*.stock.#" would match the subjects "usd.stock" and "eur.stock.db" but not "stock.nasdaq".
 
-Basically, a topic name must be composed of letters and/or numbers and dashes. Sub-topics can be 
+Basically, a topic name must be composed of letters and/or numbers and dashes. Sub-topics can be
 specified by using dots :
 
 ```
@@ -116,7 +116,7 @@ topic.* will match with topic.subtopic, but not with topic nor topic.subtopic.le
 
 There is also '#', which means 0 or more components :
 ```
-# will match all possible topics. 
+# will match all possible topics.
 topic.# will match topic, topic.subtopic, and topic.subtopic.leaf and any subtopic of topic no matter its nesting level
 topic.#.leaf will match topic.subtopic.leaf and topic.other.leaf and many others, but not topic.subtopic.other
 ```
