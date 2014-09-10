@@ -1,6 +1,6 @@
 {
     "name": "aztech/event-bus",
-    "description": "PHP Event Library with AMQP, WAMP, Stomp, Redis, PDO, ... support",
+    "description": "Event bus library - core only",
     "keywords": [
         "event",
         "events",
