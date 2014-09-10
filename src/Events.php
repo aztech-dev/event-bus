@@ -4,7 +4,6 @@ namespace Aztech\Events\Bus;
 
 use Aztech\Events\EventDispatcher;
 use Aztech\Events\Bus\Serializer\NativeSerializer;
-use Psr\Log\LoggerInterface;
 
 /**
  * Facade-like class providing easy access to event factories.
@@ -103,7 +102,6 @@ class Events
      *
      * @param PluginFactory the plugin factory from which the actual factory will be built.
      * @param Serializer $serializer Serializer used for serializing the emitted events. Defaults to a new NativeSerializer instance.
-     * @param LoggerInterface $logger A logger instance or null.
      * @return Factory
      */
     public static function createFactory(PluginFactory $plugin, Serializer $serializer = null)

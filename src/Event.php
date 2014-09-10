@@ -33,6 +33,9 @@ class Event extends AbstractEvent
         return null;
     }
 
+    /**
+     * @param string $name
+     */
     public function __get($name)
     {
         if (! array_key_exists($name, $this->properties)) {
