@@ -50,6 +50,9 @@ class JsonSerializer implements Serializer
         return $properties;
     }
 
+    /**
+     * @param Event $object
+     */
     private function getPropertiesViaReflection($object)
     {
         $reflectionObject = new \ReflectionClass(get_class($object));
@@ -79,6 +82,9 @@ class JsonSerializer implements Serializer
         return $reflectionProperties;
     }
 
+    /**
+     * @param \ReflectionClass $reflectionObject
+     */
     private function tryGetSleepProperties($object, $reflectionObject)
     {
         $reflectionProperties = null;
