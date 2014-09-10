@@ -2,8 +2,11 @@
 
 namespace Aztech\Events\Bus;
 
+use Aztech\Events\Dispatcher;
 use Aztech\Events\EventDispatcher;
+use Aztech\Events\Bus\Publisher\SynchronousPublisher;
 use Aztech\Events\Bus\Serializer\NativeSerializer;
+use Aztech\Events\Bus\Subscriber\PublishingSubscriber;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -122,10 +125,10 @@ class Events
      * @return Application
      * @throws \OutOfBoundsException when the plugin name is not registered.
      */
-    public static function createApplication($name, array $options = array(), array $bindings = array())
+    public static function createApplication($name, array $options = array(), array $bindings = array(), Dispatcher $dispatcher = null)
     {
         $factory = self::getFactory($name);
-        $application = new Application($factory->createProcessor($options), new EventDispatcher());
+        $application = new Application($factory->createProcessor($options), $dispatcher ?: new EventDispatcher());
 
         foreach ($bindings as $filter => $subscriber) {
             $application->on($filter, $subscriber);
@@ -150,6 +153,15 @@ class Events
     }
 
     /**
+     *
+     * @return SynchronousPublisher
+     */
+    public static function createSynchronousPublisher(Dispatcher $dispatcher = null)
+    {
+        return new SynchronousPublisher($dispatcher ?: new EventDispatcher());
+    }
+
+    /**
      * Creates a new event processor.
      *
      * @param string $name Name of the plugin to ues to create the processor.
@@ -161,7 +173,7 @@ class Events
     {
         $factory = self::getFactory($name);
 
-        return new Application($factory->createProcessor($options), new EventDispatcher());
+        return $factory->createProcessor($options);
     }
 
     /**
@@ -178,5 +190,23 @@ class Events
         }
 
         return self::$factories[$name];
+    }
+
+    /**
+     * Creates a bridge between a processor and a publisher, so that consumed events matching the specified filter will be forwarded to the publisher.
+     * Call the blocking run() method on the returned object to start the bridge.
+     * @param Application $application
+     * @param Publisher $publisher
+     * @param string $filter
+     * @return Application
+     */
+    public static function bridge(Processor $processor, Publisher $publisher, $filter = '#', Dispatcher $dispatcher = null)
+    {
+        $subscriber = new PublishingSubscriber($publisher);
+        $application = new Application($processor, $dispatcher ?: new EventDispatcher());
+
+        $application->on($filter, $subscriber);
+
+        return $application;
     }
 }
