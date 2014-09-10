@@ -35,6 +35,9 @@ class JsonSerializer implements Serializer
         return json_encode($dataObj, $unescapedSlashes | $unescapedUnicode);
     }
 
+    /**
+     * @param Event $object
+     */
     private function getProperties($object)
     {
         if ($object instanceof AbstractEvent) {
@@ -62,6 +65,9 @@ class JsonSerializer implements Serializer
         return $properties;
     }
 
+    /**
+     * @param \ReflectionClass $reflectionObject
+     */
     private function getSerializableProperties($object, $reflectionObject)
     {
         $reflectionProperties = $this->tryGetSleepProperties($object, $reflectionObject);
@@ -135,6 +141,9 @@ class JsonSerializer implements Serializer
         }
     }
 
+    /**
+     * @param \ReflectionClass $reflectionObject
+     */
     private function reflectionGetProperties($reflectionObject)
     {
         return $reflectionObject->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE);

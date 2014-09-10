@@ -11,6 +11,7 @@ interface Serializer
 
     /**
      *
+     * @param string $serializedObject
      * @return Event
      */
     public function deserialize($serializedObject);
