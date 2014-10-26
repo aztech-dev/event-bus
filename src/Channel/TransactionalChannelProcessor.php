@@ -6,7 +6,7 @@ use Aztech\Events\Bus\Processor;
 use Aztech\Events\Dispatcher;
 use Aztech\Events\Bus\Serializer;
 
-class TransactionChannelProcessor implements Processor
+class TransactionalChannelProcessor implements Processor
 {
     private $reader;
 

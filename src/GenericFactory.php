@@ -9,7 +9,7 @@ use Aztech\Events\Bus\Factory\OptionsDescriptor;
 use Aztech\Events\Bus\Factory\OptionsValidator;
 use Aztech\Events\Bus\Factory\NullOptionsDescriptor;
 use Aztech\Events\Bus\Channel\AcknowledgeableChannelReader;
-use Aztech\Events\Bus\Channel\TransactionChannelProcessor;
+use Aztech\Events\Bus\Channel\TransactionalChannelProcessor;
 
 class GenericFactory implements Factory
 {
@@ -38,7 +38,7 @@ class GenericFactory implements Factory
         $reader = $channel->getReader();
 
         if ($reader instanceof AcknowledgeableChannelReader) {
-            return new TransactionChannelProcessor($reader, $this->serializer);
+            return new TransactionalChannelProcessor($reader, $this->serializer);
         }
 
         return new ChannelProcessor($reader, $this->serializer);
