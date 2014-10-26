@@ -193,7 +193,6 @@ class Events
     /**
      * Creates a bridge between a processor and a publisher, so that consumed events matching the specified filter will be forwarded to the publisher.
      * Call the blocking run() method on the returned object to start the bridge.
-     * @param Application $application
      * @param Publisher $publisher
      * @param string $filter
      * @return Application
