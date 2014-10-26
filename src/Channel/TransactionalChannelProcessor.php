@@ -34,7 +34,7 @@ class TransactionalChannelProcessor implements Processor
 
         $dispatcher->dispatch($event);
 
-        $this->reader->acknowledge($message);
+        $this->reader->acknowledge($next);
     }
 
     public function dispose()
