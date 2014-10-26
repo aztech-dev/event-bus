@@ -14,5 +14,4 @@ interface AcknowledgeableChannelReader extends ChannelReader
      * @param Message $ack
      */
     public function acknowledge(Message $ack);
-
 }
