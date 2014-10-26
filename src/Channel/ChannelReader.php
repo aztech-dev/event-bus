@@ -12,4 +12,9 @@ interface ChannelReader
      * @return string
      */
     function read();
+
+    /**
+     * Performs necessary cleanup work.
+     */
+    function dispose();
 }

@@ -35,4 +35,9 @@ class ChannelProcessor implements Processor
 
         $dispatcher->dispatch($event);
     }
+
+    public function dispose()
+    {
+        $this->reader->dispose();
+    }
 }

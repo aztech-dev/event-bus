@@ -7,8 +7,13 @@ use Aztech\Events\Event;
 class NullChannelWriter implements ChannelWriter
 {
 
-    function write(Event $event, $serializedData)
+    public function write(Event $event, $serializedData)
     {
         // Do nothing.
+    }
+
+    public function dispose()
+    {
+
     }
 }

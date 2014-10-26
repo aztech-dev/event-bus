@@ -32,6 +32,11 @@ class Application implements Processor
         $this->dispatcher->addListener($filter, $subscriber);
     }
 
+    public function dispose()
+    {
+        $this->processor->dispose();
+    }
+
     /**
      * @codeCoverageIgnore
      */

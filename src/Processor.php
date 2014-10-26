@@ -17,4 +17,9 @@ interface Processor
      * @return void
      */
     function processNext(Dispatcher $dispatcher);
+
+    /**
+     * Performs any cleanup work
+     */
+    function dispose();
 }

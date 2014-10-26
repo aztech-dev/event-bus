@@ -14,4 +14,9 @@ interface ChannelWriter
      * @return void
      */
     function write(Event $event, $serializedData);
+
+    /**
+     * Performs necessary dispose work
+     */
+    function dispose();
 }
