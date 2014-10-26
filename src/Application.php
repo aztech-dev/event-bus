@@ -14,6 +14,8 @@ class Application implements Processor
 
     private $dispatcher;
 
+    private $run;
+
     public function __construct(Processor $processor, Dispatcher $dispatcher)
     {
         $this->processor = $processor;
@@ -42,9 +44,16 @@ class Application implements Processor
      */
     public function run()
     {
-        while (true) {
+        $this->run = true;
+        
+        while ($this->run) {
             $this->processNext($this->dispatcher);
         }
+    }
+    
+    public function stop()
+    {
+        $this->run = false;
     }
 
     public function processNext(Dispatcher $dispatcher)
