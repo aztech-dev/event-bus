@@ -8,6 +8,8 @@ use Aztech\Events\Bus\Channel\ChannelPublisher;
 use Aztech\Events\Bus\Factory\OptionsDescriptor;
 use Aztech\Events\Bus\Factory\OptionsValidator;
 use Aztech\Events\Bus\Factory\NullOptionsDescriptor;
+use Aztech\Events\Bus\Channel\AcknowledgeableChannelReader;
+use Aztech\Events\Bus\Channel\TransactionChannelProcessor;
 
 class GenericFactory implements Factory
 {
@@ -35,9 +37,11 @@ class GenericFactory implements Factory
         $channel = $this->channelProvider->createChannel($options);
         $reader = $channel->getReader();
 
-        $processor = new ChannelProcessor($reader, $this->serializer);
+        if ($reader instanceof AcknowledgeableChannelReader) {
+            return new TransactionChannelProcessor($reader, $this->serializer);
+        }
 
-        return $processor;
+        return new ChannelProcessor($reader, $this->serializer);
     }
 
     public function createPublisher(array $options = array())

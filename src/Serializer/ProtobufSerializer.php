@@ -5,6 +5,7 @@ namespace Aztech\Events\Bus\Serializer;
 use Aztech\Events\Bus\Serializer;
 use Aztech\Events\Event;
 use DrSlump\Protobuf\CodecInterface;
+use DrSlump\Protobuf\MessageInterface;
 
 class ProtobufSerializer implements Serializer
 {
@@ -17,6 +18,12 @@ class ProtobufSerializer implements Serializer
     {
         $this->codec = $codec;
         $this->hydratedClassName = $hydratedClassName;
+
+        if (! ($hydratedClassName instanceof MessageInterface)) {
+            throw new \InvalidArgumentException(
+                'Hydrated classname must be a implementation of DrSlump\Protobuf\MessageInterface.'
+            );
+        }
     }
 
     public function serialize(Event $event)
