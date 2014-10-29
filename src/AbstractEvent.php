@@ -12,16 +12,16 @@ abstract class AbstractEvent implements EventInterface
      *
      * @var string
      */
-    private $id;
+    private $identifier;
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->identifier = Uuid::uuid4()->toString();
     }
 
     public function getId()
     {
-        return $this->getCategory() . ':' . $this->id;
+        return $this->getCategory() . ':' . $this->identifier;
     }
 
     public function getProperties()

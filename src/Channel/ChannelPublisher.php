@@ -22,8 +22,8 @@ class ChannelPublisher implements Publisher
 
     public function publish(Event $event)
     {
-        $serializedRepresentation = $this->serializer->serialize($event);
+        $serializedEvent = $this->serializer->serialize($event);
 
-        return $this->writer->write($event, $serializedRepresentation);
+        return $this->writer->write($event, $serializedEvent);
     }
 }

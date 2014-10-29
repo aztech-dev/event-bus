@@ -11,6 +11,8 @@ use Aztech\Events\Bus\Subscriber\PublishingSubscriber;
 /**
  * Facade-like class providing easy access to event factories.
  * @author thibaud
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class Events
 {
@@ -118,6 +120,7 @@ class Events
     /**
      * Creates a new application.
      *
+     * @deprecated Use createEventKernel. Will be deprecated in v2.0.0
      * @param string $name Name of the plugin to use to create the consumer
      * @param array $options Options to pass to the factory.
      * @return Application
@@ -126,13 +129,33 @@ class Events
     public static function createApplication($name, array $options = array(), array $bindings = array(), Dispatcher $dispatcher = null)
     {
         $factory = self::getFactory($name);
-        $application = new Application($factory->createProcessor($options), $dispatcher ?: new EventDispatcher());
+        $kernel = new Application($factory->createProcessor($options), $dispatcher ?: new EventDispatcher());
 
         foreach ($bindings as $filter => $subscriber) {
-            $application->on($filter, $subscriber);
+            $kernel->on($filter, $subscriber);
         }
 
-        return $application;
+        return $kernel;
+    }
+
+    /**
+     * Creates a new event kernel.
+     *
+     * @param string $name Name of the plugin to use to create the consumer
+     * @param array $options Options to pass to the factory.
+     * @return EventKernel
+     * @throws \OutOfBoundsException when the plugin name is not registered.
+     */
+    public static function createEventKernel($name, array $options = array(), array $bindings = array(), Dispatcher $dispatcher = null)
+    {
+        $factory = self::getFactory($name);
+        $kernel = new EventKernel($factory->createProcessor($options), $dispatcher ?: new EventDispatcher());
+
+        foreach ($bindings as $filter => $subscriber) {
+            $kernel->on($filter, $subscriber);
+        }
+
+        return $kernel;
     }
 
     /**
@@ -191,8 +214,27 @@ class Events
     }
 
     /**
+     *
+     * @param Processor $processor
+     * @param Publisher $publisher
+     * @param string $filter
+     * @param Dispatcher $dispatcher
+     * @return EventKernel
+     */
+    public static function createBridge(Processor $processor, Publisher $publisher, $filter = '#', Dispatcher $dispatcher = null)
+    {
+        $subscriber = new PublishingSubscriber($publisher);
+        $kernel = new EventKernel($processor, $dispatcher ?: new EventDispatcher());
+
+        $kernel->on($filter, $subscriber);
+
+        return $kernel;
+    }
+
+    /**
      * Creates a bridge between a processor and a publisher, so that consumed events matching the specified filter will be forwarded to the publisher.
      * Call the blocking run() method on the returned object to start the bridge.
+     * @deprecated Use createBridge instead. Will be removed in v2.0.0
      * @param Publisher $publisher
      * @param string $filter
      * @return Application
@@ -200,10 +242,10 @@ class Events
     public static function bridge(Processor $processor, Publisher $publisher, $filter = '#', Dispatcher $dispatcher = null)
     {
         $subscriber = new PublishingSubscriber($publisher);
-        $application = new Application($processor, $dispatcher ?: new EventDispatcher());
+        $kernel = new Application($processor, $dispatcher ?: new EventDispatcher());
 
-        $application->on($filter, $subscriber);
+        $kernel->on($filter, $subscriber);
 
-        return $application;
+        return $kernel;
     }
 }

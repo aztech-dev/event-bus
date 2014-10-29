@@ -8,13 +8,14 @@ use Aztech\Events\Dispatcher;
 use Aztech\Events\Event;
 use Aztech\Events\EventDispatcher;
 use Aztech\Events\Subscriber;
+use Aztech\Events\Bus\Processor;
 
 /**
  * Publisher/consumer that simply wraps a Dispatcher.
  * @author thibaud
  *
  */
-class SynchronousPublisher implements Publisher
+class SynchronousPublisher implements Publisher, Processor
 {
 
     /**
@@ -33,14 +34,24 @@ class SynchronousPublisher implements Publisher
         return $this->dispatcher->dispatch($event);
     }
 
+    /**
+     *
+     * @param Dispatcher $dispatcher
+     */
     public function processNext(Dispatcher $dispatcher)
     {
         // Raise warning ?
     }
 
+    public function dispose()
+    {
+
+    }
+
     /**
      * (non-PHPdoc)
      * @see \Aztech\Events\Bus\Consumer::on()
+     * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public function on($categoryFilter, $subscriber)
     {

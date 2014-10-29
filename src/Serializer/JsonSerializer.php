@@ -37,6 +37,7 @@ class JsonSerializer implements Serializer
 
     /**
      * @param Event $object
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     private function getProperties($object)
     {
@@ -137,6 +138,12 @@ class JsonSerializer implements Serializer
         return $object;
     }
 
+    /**
+     *
+     * @param Event|AbstractEvent $object
+     * @param array $properties
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     private function setProperties($object, $properties)
     {
         if ($object instanceof AbstractEvent) {

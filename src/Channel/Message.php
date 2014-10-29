@@ -48,7 +48,7 @@ class Message
     /**
      * Returns the message identifier.
      *
-     * @abstract The returned data must be a valid identifier in the scope of the provider that
+     * @desc The returned data must be a valid identifier in the scope of the provider that
      * created the current instance, and is not guaranteed to have any meaning in the client scope.
      * This identifier  is used by the message provider when attempting to ack a received message.
      *

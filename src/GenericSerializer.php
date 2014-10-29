@@ -24,8 +24,10 @@ class GenericSerializer implements Serializer
 
     /**
      * Checks that the given serializer was not already added to the serialization map
+     *
      * @param Serializer $serializer
      * @return boolean
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function hasInChildren(GenericSerializer $serializer)
     {

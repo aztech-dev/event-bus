@@ -25,6 +25,12 @@ class Event extends AbstractEvent
         return $this->category;
     }
 
+    /**
+     *
+     * @param unknown $method
+     * @param unknown $args
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function __call($method, $args) {
         if (substr($method, 0, 3) == 'get') {
             return $this->__get(lcfirst(substr($method, 3)));

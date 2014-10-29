@@ -9,6 +9,13 @@ class GenericOptionsDescriptor implements OptionsDescriptor
 
     private $optionDefaults = array();
 
+    /**
+     *
+     * @param unknown $name
+     * @param string $required
+     * @param string $default
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
     public function addOption($name, $required = true, $default = null)
     {
         $this->optionKeys[] = $name;
