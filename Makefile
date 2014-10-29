@@ -1,8 +1,8 @@
-test: phpunit phpcs bugfree
-test-analysis: phpcs bugfree
+test: phpunit phpcs bugfree phpmd
+test-analysis: phpcs bugfree phpmd
 test-upload: scrutinizer
 
-.PHONY: test test-analysis test-upload pretest phpunit phpcs bugfree ocular scrutinizer clean clean-env clean-deps
+.PHONY: test test-analysis test-upload pretest phpunit phpcs phpmd bugfree ocular scrutinizer clean clean-env clean-deps
 
 pretest:
 	composer install --dev
@@ -21,6 +21,9 @@ else
 phpcs: pretest
 	@vendor/bin/phpcs --standard=phpcs.xml -n src
 endif
+
+phpmd: pretest
+	@vendor/bin/phpmd src/ text design,naming,cleancode,codesize,controversial,unusedcode
 
 bugfree: pretest
 	@vendor/bin/bugfree lint src
