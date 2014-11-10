@@ -63,6 +63,8 @@ class EventKernel implements Processor
 
         while ($this->run) {
             $this->processNext($this->dispatcher);
+            
+            usleep(50000);
         }
         /** @codeCoverageIgnoreEnd */
     }
