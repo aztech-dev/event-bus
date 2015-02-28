@@ -41,90 +41,6 @@ class JsonSerializer implements Serializer
         return json_encode($dataObj, $unescapedSlashes | $unescapedUnicode);
     }
 
-    /**
-     * @param Event $object
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    private function getProperties($object)
-    {
-        if ($object instanceof AbstractEvent) {
-            $properties = $object->getProperties();
-        }
-        else {
-            $properties = $this->getPropertiesViaReflection($object);
-        }
-
-        return $properties;
-    }
-
-    /**
-     * @param Event $object
-     */
-    private function getPropertiesViaReflection($object)
-    {
-        $reflectionObject = new \ReflectionClass(get_class($object));
-        $reflectionProperties = $this->getSerializableProperties($object, $reflectionObject);
-        $properties = array();
-
-        foreach ($reflectionProperties as $reflectionProperty) {
-            $this->ensurePropertyIsAccessible($reflectionProperty);
-            $properties[$reflectionProperty->getName()] = $reflectionProperty->getValue($object);
-            $this->restorePropertyAccessibility($reflectionProperty);
-        }
-
-        return $properties;
-    }
-
-    /**
-     * @param \ReflectionClass $reflectionObject
-     */
-    private function getSerializableProperties($object, $reflectionObject)
-    {
-        $reflectionProperties = $this->tryGetSleepProperties($object, $reflectionObject);
-
-        if (empty($reflectionProperties)) {
-            $reflectionProperties = $reflectionObject->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE);
-        }
-
-        return $reflectionProperties;
-    }
-
-    /**
-     * @param \ReflectionClass $reflectionObject
-     */
-    private function tryGetSleepProperties($object, $reflectionObject)
-    {
-        $reflectionProperties = null;
-
-        if (method_exists($object, '__sleep')) {
-            $properties = $object->__sleep();
-            $reflectionProperties = array_map(function ($name) use($reflectionObject)
-            {
-                return $reflectionObject->getProperty($name);
-            }, $properties);
-
-            if (method_exists($object, '__wakeup')) {
-                $object->__wakeup();
-            }
-        }
-
-        return $reflectionProperties;
-    }
-
-    private function ensurePropertyIsAccessible(\ReflectionProperty $property)
-    {
-        if ($property->isPrivate() || $property->isPrivate()) {
-            $property->setAccessible(true);
-        }
-    }
-
-    private function restorePropertyAccessibility(\ReflectionProperty $property)
-    {
-        if ($property->isPrivate() || $property->isProtected()) {
-            $property->setAccessible(false);
-        }
-    }
-
     public function deserialize($serializedObject)
     {
         $dataObj = json_decode($serializedObject, true);
@@ -145,6 +61,83 @@ class JsonSerializer implements Serializer
     }
 
     /**
+     * @param object $object
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @return array
+     */
+    private function getProperties($object)
+    {
+        if ($object instanceof AbstractEvent) {
+            $properties = $object->getProperties();
+        }
+        else {
+            $properties = $this->getPropertiesViaReflection($object);
+        }
+
+        return $properties;
+    }
+
+    /**
+     * @param object $object
+     * @return array
+     */
+    private function getPropertiesViaReflection($object)
+    {
+        $reflectionObject = new \ReflectionClass(get_class($object));
+        $reflectionProperties = $this->getReflectionProperties($reflectionObject);
+        $properties = array();
+
+        foreach ($reflectionProperties as $reflectionProperty) {
+            $properties[$reflectionProperty->getName()] = $this->getPropertyValue($object, $reflectionProperty);
+        }
+
+        return $properties;
+    }
+
+    private function getPropertyValue($object, $reflectionProperty)
+    {
+        $this->ensurePropertyIsAccessible($reflectionProperty);
+        $value = $reflectionProperty->getValue($object);
+        $this->restorePropertyAccessibility($reflectionProperty);
+
+        if (is_object($value)) {
+            $value = $this->getPropertiesViaReflection($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     *
+     * @param $reflectionObject
+     * @return \ReflectionProperty[]
+     */
+    private function getReflectionProperties(\ReflectionClass $reflectionObject)
+    {
+        $properties = $reflectionObject->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE);
+
+        if ($reflectionObject->getParentClass()) {
+            $properties = array_merge($this->getReflectionProperties($reflectionObject->getParentClass()), $properties);
+        }
+
+        return $properties;
+    }
+
+    private function ensurePropertyIsAccessible(\ReflectionProperty $property)
+    {
+        if ($property->isPrivate() || $property->isProtected()) {
+            $property->setAccessible(true);
+        }
+    }
+
+    private function restorePropertyAccessibility(\ReflectionProperty $property)
+    {
+        if ($property->isPrivate() || $property->isProtected()) {
+            $property->setAccessible(false);
+        }
+    }
+
+    /**
      *
      * @param Event|AbstractEvent $object
      * @param array $properties
@@ -156,22 +149,14 @@ class JsonSerializer implements Serializer
             $object->setProperties($properties);
         }
         else {
-            $this->reflectionSetProperties($object, $properties);
+            $this->setPropertiesViaReflection($object, $properties);
         }
     }
 
-    /**
-     * @param \ReflectionClass $reflectionObject
-     */
-    private function reflectionGetProperties($reflectionObject)
-    {
-        return $reflectionObject->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE);
-    }
-
-    private function reflectionSetProperties($object, $properties)
+    private function setPropertiesViaReflection($object, $properties)
     {
         $reflectionObject = new \ReflectionClass(get_class($object));
-        $reflectionProperties = $this->reflectionGetProperties($reflectionObject);
+        $reflectionProperties = $this->getPropertiesViaReflection($reflectionObject);
 
         foreach ($reflectionProperties as $reflectionProperty) {
             if (! array_key_exists($reflectionProperty->getName(), $properties)) {
