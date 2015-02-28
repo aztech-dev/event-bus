@@ -30,10 +30,11 @@ class OptionsValidator
 
     private function getKeyValueOrDefault(array $options, array $defaults, $key)
     {
-        $value = $defaults[$key];
-
         if (array_key_exists($key, $options)) {
             $value = $options[$key];
+        }
+        elseif (array_key_exists($key, $defaults)) {
+            $value = $defaults[$key];
         }
 
         return $value;

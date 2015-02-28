@@ -11,8 +11,8 @@ class GenericOptionsDescriptor implements OptionsDescriptor
 
     /**
      *
-     * @param unknown $name
-     * @param string $required
+     * @param string $name
+     * @param bool $required
      * @param string $default
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */

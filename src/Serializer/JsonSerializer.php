@@ -12,9 +12,12 @@ class JsonSerializer implements Serializer
 
     private $instantiator;
 
-    public function __construct()
+    private $includeClassMetadata = true;
+
+    public function __construct($includeClassMetadata = true)
     {
         $this->instantiator = new Instantiator();
+        $this->includeClassMetadata = (bool) $includeClassMetadata;
     }
 
     public function serialize(Event $object)
@@ -24,7 +27,10 @@ class JsonSerializer implements Serializer
 
         $dataObj = new \stdClass();
 
-        $dataObj->class = $class;
+        if ($this->includeClassMetadata) {
+            $dataObj->class = $class;
+        }
+
         $dataObj->properties = $properties;
         $dataObj->category = $object->getCategory();
 
